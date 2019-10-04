@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,30 +50,30 @@ public class EmployeeRestController {
 
 	@PostMapping(consumes = { "application/xml", "application/json" }, produces = { "application/xml",
 			"application/json" })
-	public String saveEmployee(@RequestBody Employee employee) {
-		empService.addEmployee(employee);
-		return "Successfully updated";
+	public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
+		
+		return new ResponseEntity<Employee>(empService.addEmployee(employee),HttpStatus.CREATED);
 
 	}
 
 	@PutMapping(path = "/{id}", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
 			"application/json" })
-	public String updateEmployee(@RequestBody Employee employee, @PathVariable("id") String id)
+	public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee, @PathVariable("id") String id)
 			throws MyEmployeeNotFoundException {
 		employee.setEmpId(Integer.parseInt(id));
 		Integer status = empService.updateEmployeeByID(employee, Integer.parseInt(id));
 		if (status != 1) {
 			throw new MyEmployeeNotFoundException("no data associate with employee id :" + id);
 		} else
-			return "Employee Data Updated";
+			return new ResponseEntity<Employee>(employee, HttpStatus.OK);
 
 	}
 
 	@DeleteMapping(value = "/{id}", consumes = { "application/xml", "application/json" }, produces = {
 			"application/xml", "application/json" })
-	public String deleteEmployeeByID(@PathVariable String id) throws MyEmployeeNotFoundException {
+	public ResponseEntity<HttpStatus> deleteEmployeeByID(@PathVariable String id) throws MyEmployeeNotFoundException {
 		Integer empID = Integer.parseInt(id);
 		empService.deleteEmployeeByID(empID);
-		return "successfully deleted";
+		return new ResponseEntity("Deleted Successfully", HttpStatus.NO_CONTENT);
 	}
 }

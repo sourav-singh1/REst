@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.ResourceSupport;
 
 @Entity
+@XmlRootElement
 public class Employee extends ResourceSupport {
 	
 	
@@ -59,6 +61,8 @@ public class Employee extends ResourceSupport {
 	public void setEmpSalary(Integer empSalary) {
 		this.empSalary = empSalary;
 	}
+	
+	
 
 	public Employee(Integer empId, String empName, String empDept, Integer empSalary) {
 		super();
@@ -68,11 +72,6 @@ public class Employee extends ResourceSupport {
 		this.empSalary = empSalary;
 	}
 
-	@Override
-	public String toString() {
-		return "Employee [empId=" + empId + ", empName=" + empName + ", empDept=" + empDept + ", empSalary=" + empSalary
-				+ "]";
-	}
 
 	public Employee() {
 		super();

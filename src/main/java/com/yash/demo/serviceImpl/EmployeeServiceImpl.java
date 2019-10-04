@@ -18,9 +18,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDAO employeeDAO;
 
 	@Override
-	public int addEmployee(Employee employee) {
-		employeeDAO.save(employee);
-		return 1;
+	public Employee addEmployee(Employee employee) {
+		return employeeDAO.save(employee);
+		
 	}
 
 	@Override
@@ -29,10 +29,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public int deleteEmployeeByID(Integer employeeID) {
+	public void deleteEmployeeByID(Integer employeeID) throws MyEmployeeNotFoundException {
 		employeeDAO.findById(employeeID).orElseThrow(()->new MyEmployeeNotFoundException("No such employee with emp id: "+employeeID));
 		employeeDAO.deleteById(employeeID);
-		return 1;
 	}
 
 	@Override
@@ -47,7 +46,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public Employee findByID(Integer empID) throws MyEmployeeNotFoundException {
-	 return employeeDAO.findById(empID).orElseThrow(()->new MyEmployeeNotFoundException("No Employee Found with employee id: "+empID));
+	 Employee employee = employeeDAO.findById(empID).orElseThrow(()->new MyEmployeeNotFoundException("No Employee Found with employee id: "+empID));
+	 return employee;
 	}
 
 }
