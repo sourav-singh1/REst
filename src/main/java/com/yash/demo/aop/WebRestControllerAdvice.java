@@ -16,18 +16,11 @@ import com.yash.demo.model.ErrorResponse;
 
 @RestControllerAdvice
 public class WebRestControllerAdvice {
-	
+
 	@ExceptionHandler(MyEmployeeNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ErrorResponse handleNotFoundException(MyEmployeeNotFoundException e) {
 		return new ErrorResponse(404, e.getMessage());
-
-	}
-	
-	@ExceptionHandler(RuntimeException.class)
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	public ErrorResponse handleAllGenericException(RuntimeException e) {
-		return new ErrorResponse(400, e.getMessage());
 
 	}
 

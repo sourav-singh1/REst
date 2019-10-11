@@ -19,7 +19,6 @@ public class LogService {
 			+ "execution(* com.yash.demo.serviceImpl.EmployeeServiceImpl.*(..))||"
 			+ "execution(* com.yash.demo.dao.EmployeeDAO.*(..))")
 	public void logMethod() {
-
 	}
 
 	@Before(value = "logMethod()", argNames = "joinPoint")

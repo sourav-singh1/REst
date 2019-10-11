@@ -20,12 +20,26 @@ import com.yash.demo.exception.MyEmployeeNotFoundException;
 import com.yash.demo.model.Employee;
 import com.yash.demo.service.EmployeeService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/employee")
+@Api(value="/employee",description="Employee CRUD Operation",produces ="application/json")
 public class EmployeeRestController {
 
 	@Autowired
 	private EmployeeService empService;
+	
+	 @ApiOperation(value="get Employees list",response=Employee.class)
+	    @ApiResponses(value={
+	    @ApiResponse(code=200,message="Employee Details Retrieved",response=Employee.class),
+	   @ApiResponse(code=500,message="Internal Server Error"),
+	   @ApiResponse(code=404,message="Employee not found")
+	    })
 
 	@GetMapping(produces = { "application/xml", "application/json" } )
 	public List<Employee> getAllEmployee() {
@@ -39,7 +53,13 @@ public class EmployeeRestController {
 		return empList;
 
 	}
-
+	 
+	 @ApiOperation(value="get Employee Object",response=Employee.class)
+	    @ApiResponses(value={
+	    @ApiResponse(code=200,message="Employee Details Retrieved",response=Employee.class),
+	   @ApiResponse(code=500,message="Internal Server Error"),
+	   @ApiResponse(code=404,message="Employee not found")
+	    })
 	@GetMapping(path = "/{id}", produces = { "application/xml", "application/json" })
 	public Employee findEmployeeByEmpID(@PathVariable String id) {
 		Employee employee = empService.findByID(Integer.parseInt(id));
@@ -47,7 +67,13 @@ public class EmployeeRestController {
 		employee.add(link);
 		return employee;
 	}
-
+	 
+	 @ApiOperation(value="Save Employee to database",response=Employee.class)
+	    @ApiResponses(value={
+	    @ApiResponse(code=201,message="Employee Details submitted",response=Employee.class),
+	   @ApiResponse(code=500,message="Internal Server Error"),
+	   @ApiResponse(code=404,message="Employee not found")
+	    })
 	@PostMapping(consumes = { "application/xml", "application/json" }, produces = { "application/xml",
 			"application/json" })
 	public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
@@ -55,7 +81,13 @@ public class EmployeeRestController {
 		return new ResponseEntity<Employee>(empService.addEmployee(employee),HttpStatus.CREATED);
 
 	}
-
+	 
+	 @ApiOperation(value="Put Employee to database can update if already exist",response=Employee.class)
+	    @ApiResponses(value={
+	    @ApiResponse(code=200,message="Employee Details submitted",response=Employee.class),
+	   @ApiResponse(code=500,message="Internal Server Error"),
+	   @ApiResponse(code=404,message="Employee not found")
+	    })
 	@PutMapping(path = "/{id}", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
 			"application/json" })
 	public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee, @PathVariable("id") String id)
@@ -68,7 +100,13 @@ public class EmployeeRestController {
 			return new ResponseEntity<Employee>(employee, HttpStatus.OK);
 
 	}
-
+	 
+	 @ApiOperation(value="Delete Employee by ID",response=Employee.class)
+	    @ApiResponses(value={
+	    @ApiResponse(code=204,message="Employee Details Deleted",response=Employee.class),
+	   @ApiResponse(code=500,message="Internal Server Error"),
+	   @ApiResponse(code=404,message="Employee not found")
+	    })
 	@DeleteMapping(value = "/{id}", consumes = { "application/xml", "application/json" }, produces = {
 			"application/xml", "application/json" })
 	public ResponseEntity<HttpStatus> deleteEmployeeByID(@PathVariable String id) throws MyEmployeeNotFoundException {
